@@ -180,11 +180,15 @@ public class PlayerActivity extends AppCompatActivity
                 position=((position-1)<0)?(mySongs.size()-1):(position-1);
                 Uri u = Uri.parse(mySongs.get(position).toString());
                 myMediaPlayer=MediaPlayer.create(getApplicationContext(),u);
-
                 sname=mySongs.get(position).getName().toString();
                 songTextLable.setText(sname);
-
-                myMediaPlayer.start();
+                try
+                {
+                    myMediaPlayer.start();
+                }
+                catch(Exception e)
+                {
+                }
             }
         });
     }
