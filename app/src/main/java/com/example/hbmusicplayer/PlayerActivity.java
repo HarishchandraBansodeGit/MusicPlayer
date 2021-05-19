@@ -17,7 +17,8 @@ import android.widget.TextView;
 import java.io.File;
 import java.util.ArrayList;
 
-public class PlayerActivity extends AppCompatActivity {
+public class PlayerActivity extends AppCompatActivity
+{
 
     Button btn_next,btn_previous,btn_pause;
     TextView songTextLable;
@@ -30,7 +31,8 @@ public class PlayerActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
 
@@ -45,25 +47,33 @@ public class PlayerActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-        updateseekBar=new Thread(){
+        updateseekBar=new Thread()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
 
                 int totalDuration = myMediaPlayer.getDuration();
                 int currentPosition = 0;
 
-                while (currentPosition < totalDuration) {
-                    try {
+                while (currentPosition < totalDuration)
+                {
+                    try
+                    {
                         sleep(500);
-                        //currentPosition = myMediaPlayer.getCurrentPosition();
-                        currentPosition = myMediaPlayer.getDuration();
+                        currentPosition = myMediaPlayer.getCurrentPosition();
+                        //currentPosition = myMediaPlayer.getDuration();
                         songSeekbar.setProgress(currentPosition);
-                    } catch (InterruptedException e) {
+                    }
+                    catch (InterruptedException | IllegalStateException e)
+                    {
                         e.printStackTrace();
                     }
                 }
             }
         };
+        //songSeekbar.setMax(myMediaPlayer.getDuration());
+        //updateseekBar.start();
 
         if (myMediaPlayer!=null){
             myMediaPlayer.stop();
@@ -80,7 +90,7 @@ public class PlayerActivity extends AppCompatActivity {
         songTextLable.setSelected(true);
         songTextLable.setText(songName);
         position=bundle.getInt("pos",0);
-        Uri u=Uri.parse(mySongs.get(position).toString());
+        Uri u = Uri.parse(mySongs.get(position).toString());
 
         myMediaPlayer=MediaPlayer.create(getApplicationContext(),u);
         myMediaPlayer.start();
@@ -91,31 +101,38 @@ public class PlayerActivity extends AppCompatActivity {
         //for colour change seekbar
         songSeekbar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorPrimary), PorterDuff.Mode.MULTIPLY);
         songSeekbar.getThumb().setColorFilter(getResources().getColor(R.color.colorPrimary),PorterDuff.Mode.SRC_IN);
+
+
         //apply listner on seekbar
-        songSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        songSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b)
+            {
 
             }
 
             @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            public void onStartTrackingTouch(SeekBar seekBar)
+            {
 
             }
 
             @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
+            public void onStopTrackingTouch(SeekBar seekBar)
+            {
                 myMediaPlayer.seekTo(seekBar.getProgress());
             }
         });
 
-        btn_pause.setOnClickListener(new View.OnClickListener() {
+        btn_pause.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 songSeekbar.setMax(myMediaPlayer.getDuration());
-                if (myMediaPlayer.isPlaying()) {
-
+                if (myMediaPlayer.isPlaying())
+                {
                     btn_pause.setBackgroundResource(R.drawable.icon_play);
                     myMediaPlayer.pause();
                 }
@@ -127,9 +144,11 @@ public class PlayerActivity extends AppCompatActivity {
             }
         });
 
-        btn_next.setOnClickListener(new View.OnClickListener() {
+        btn_next.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 myMediaPlayer.stop();
                 myMediaPlayer.release();
                 position=((position+1)% mySongs.size());
@@ -139,14 +158,22 @@ public class PlayerActivity extends AppCompatActivity {
                 sname=mySongs.get(position).getName().toString();
                 songTextLable.setText(sname);
                 myMediaPlayer.start();
+                try
+                {
+                    myMediaPlayer.start();
+                }
+                catch(Exception e)
+                {
+
+                }
             }
         });
 
-
-        btn_previous.setOnClickListener(new View.OnClickListener() {
+        btn_previous.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-
+            public void onClick(View view)
+            {
                 myMediaPlayer.stop();
                 myMediaPlayer.release();
 
@@ -161,13 +188,14 @@ public class PlayerActivity extends AppCompatActivity {
             }
         });
     }
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if(item.getItemId()==android.R.id.home){
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item)
+    {
+        if(item.getItemId()==android.R.id.home)
+        {
             onBackPressed();
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
