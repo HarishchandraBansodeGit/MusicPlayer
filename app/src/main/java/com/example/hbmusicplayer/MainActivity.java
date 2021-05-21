@@ -12,15 +12,18 @@ import android.widget.ListView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -41,27 +44,21 @@ public class MainActivity extends AppCompatActivity {
         runtimePermission();
     }
 
-    public void runtimePermission(){
-
-        Dexter.withActivity(this)
-
-                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-
-
-                .withListener(new PermissionListener() {
+    public void runtimePermission()
+    {
+        Dexter.withActivity(this).withPermissions(Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO)
+                .withListener(new MultiplePermissionsListener()
+                {
                     @Override
-                    public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                    public void onPermissionsChecked(MultiplePermissionsReport report)
+                    {
                         display();
                     }
 
                     @Override
-                    public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
-                        permissionToken.continuePermissionRequest();
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token)
+                    {
+                       // PermissionToken.continuePermissionRequest();
 
                     }
                 }).check();

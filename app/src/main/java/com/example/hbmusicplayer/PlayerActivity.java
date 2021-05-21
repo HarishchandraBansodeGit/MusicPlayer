@@ -14,6 +14,12 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.gauravk.audiovisualizer.visualizer.BarVisualizer;
+import com.gauravk.audiovisualizer.visualizer.BlastVisualizer;
+import com.gauravk.audiovisualizer.visualizer.BlobVisualizer;
+import com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer;
+import com.gauravk.audiovisualizer.visualizer.HiFiVisualizer;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -28,7 +34,31 @@ public class PlayerActivity extends AppCompatActivity
     String sname;
     ArrayList<File> mySongs;
     Thread updateseekBar;
+    BlobVisualizer visualizer;
+    //BlastVisualizer visualizer;
+    //CircleLineVisualizer visualizer;
+    //HiFiVisualizer visualizer;
+    //BarVisualizer visualizer;
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item)
+    {
+        if(item.getItemId()==android.R.id.home)
+        {
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        if (visualizer !=null)
+        {
+            visualizer.release();
+        }
+        super.onDestroy();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,6 +71,7 @@ public class PlayerActivity extends AppCompatActivity
         btn_previous=(Button)findViewById(R.id.previous);
         songTextLable=(TextView)findViewById(R.id.songLable);
         songSeekbar=(SeekBar)findViewById(R.id.seekBar);
+        visualizer=findViewById(R.id.visualizer);
 
         getSupportActionBar().setTitle("Now Playing");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -60,7 +91,7 @@ public class PlayerActivity extends AppCompatActivity
                 {
                     try
                     {
-                        sleep(1000);
+                        sleep(500);
                         currentPosition = myMediaPlayer.getCurrentPosition();
                         //currentPosition = myMediaPlayer.getDuration();
                         songSeekbar.setProgress(currentPosition);
@@ -125,6 +156,12 @@ public class PlayerActivity extends AppCompatActivity
             }
         });
 
+        int audiosessionId=myMediaPlayer.getAudioSessionId();
+        if (audiosessionId !=-1)
+        {
+            visualizer.setAudioSessionId(audiosessionId);
+        }
+
         btn_pause.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -158,6 +195,7 @@ public class PlayerActivity extends AppCompatActivity
                 sname=mySongs.get(position).getName().toString();
                 songTextLable.setText(sname);
                 myMediaPlayer.start();
+
                 try
                 {
                     myMediaPlayer.start();
@@ -166,8 +204,14 @@ public class PlayerActivity extends AppCompatActivity
                 {
 
                 }
+                int audiosessionId=myMediaPlayer.getAudioSessionId();
+                if (audiosessionId !=-1)
+                {
+                    visualizer.setAudioSessionId(audiosessionId);
+                }
             }
         });
+
 
         btn_previous.setOnClickListener(new View.OnClickListener()
         {
@@ -188,18 +232,14 @@ public class PlayerActivity extends AppCompatActivity
                 }
                 catch(Exception e)
                 {
+
+                }
+                int audiosessionId=myMediaPlayer.getAudioSessionId();
+                if (audiosessionId !=-1)
+                {
+                    visualizer.setAudioSessionId(audiosessionId);
                 }
             }
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item)
-    {
-        if(item.getItemId()==android.R.id.home)
-        {
-            onBackPressed();
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
