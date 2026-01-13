@@ -1,6 +1,6 @@
 
 
-# 🎵 HB Music Player (Android)
+# 🎵 Music Player (Android)
 
 A simple, clean, and functional **Android Music Player App** built using **Java** and **XML**.
 This app allows users to play, pause, skip, and control volume and playback position of local audio files with an elegant UI.
@@ -38,27 +38,6 @@ Designed by **Harishchandra Bansode & Abhishek Kadu**.
 | IDE            | Android Studio          |
 | Min SDK        | Android 5.0+            |
 
-
----
-
-## 🧠 How It Works
-
-* Songs are stored in an `ArrayList<Integer>`
-* MediaPlayer loads songs by index
-* `SeekBar` tracks playback progress
-* Volume control uses `AudioManager`
-* Background thread updates seekbar every second
-* `ImageView` changes dynamically based on song
-
----
-
-## 🖥 UI Components
-
-* `ImageView` → Album Art
-* `TextView` → Song Title
-* `SeekBar` → Song progress
-* `SeekBar` → Volume
-* `ImageView Buttons` → Play / Pause / Next / Prev
 ---
 
 ## 🧩 Dependencies
