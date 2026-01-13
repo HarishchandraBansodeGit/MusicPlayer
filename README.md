@@ -5,7 +5,7 @@
 A simple, clean, and functional **Android Music Player App** built using **Java** and **XML**.
 This app allows users to play, pause, skip, and control volume and playback position of local audio files with an elegant UI.
 
-Designed by **Harishchandra Bansode & Akshay Auti**.
+Designed by **Harishchandra Bansode & Abhishek Kadu**.
 
 ---
 
